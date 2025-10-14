@@ -1,0 +1,6 @@
+{
+    "inputBucketName": "wim-etl-test-input",
+    "outputBucketName": "wim-etl-test-output",
+    "databaseName": "wim-etl-test-db",
+    "region": "us-east-2"
+}

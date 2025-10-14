@@ -1,0 +1,151 @@
+fdc_id,description,data_type,food_category,serving_size_g,calories_kcal,protein_g,fat_g,carbohydrate_g,sodium_mg
+1000001,Carrot,SR Legacy,Vegetables and Vegetable Products,150,72,1.6,1.7,12.6,1522
+1000002,Potato,SR Legacy,Vegetables and Vegetable Products,100,24,0.7,0.4,4.5,903
+1000003,Bun,Branded,Baked Products,150,317,8.9,6.2,56.3,241
+1000004,Couscous,Branded,Cereal Grains and Pasta,100,200,4.1,7.7,28.5,184
+1000005,"Chicken breast, roasted",SR Legacy,Poultry Products,50,131,14.1,8.3,0.0,578
+1000006,Tomato,SR Legacy,Vegetables and Vegetable Products,30,21,0.8,0.3,3.8,387
+1000007,Bun,SR Legacy,Baked Products,30,39,1.4,0.9,6.3,24
+1000008,Tomato,Foundation,Vegetables and Vegetable Products,50,29,1.3,0.2,5.6,266
+1000009,Cottage Cheese,SR Legacy,Dairy and Egg Products,150,205,18.1,8.9,13.2,394
+1000010,"Tuna, canned in water",Branded,Finfish and Shellfish Products,50,122,13.7,7.2,0.7,629
+1000011,Whole Wheat Bread,Foundation,Baked Products,200,307,9.7,5.0,55.8,854
+1000012,"Beef, ground 85% lean",SR Legacy,Beef Products,150,382,49.6,20.4,0.0,942
+1000013,Bun,SR Legacy,Baked Products,120,244,9.9,4.8,40.2,340
+1000014,Bagel,SR Legacy,Baked Products,120,270,9.9,8.4,38.8,133
+1000015,"Turkey, ground 93% lean",SR Legacy,Poultry Products,30,62,8.4,3.1,0.0,217
+1000016,Blueberries,SR Legacy,Fruits and Fruit Juices,150,66,4.1,1.7,8.7,1729
+1000017,Spinach,SR Legacy,Vegetables and Vegetable Products,100,38,0.5,1.1,6.5,1079
+1000018,Barley,SR Legacy,Cereal Grains and Pasta,30,70,1.5,1.6,12.5,88
+1000019,"Beef, ground 85% lean",Branded,Beef Products,120,308,40.3,15.3,2.2,1127
+1000020,"Beef steak, grilled",Survey (FNDDS),Beef Products,40,121,13.2,7.6,0.0,230
+1000021,Potato,SR Legacy,Vegetables and Vegetable Products,200,91,4.3,2.9,12.0,495
+1000022,Canola oil,Foundation,Fats and Oils,40,355,0.0,39.4,0.0,151
+1000023,Bun,Survey (FNDDS),Baked Products,50,92,3.9,1.8,15.0,204
+1000024,Broccoli,Branded,Vegetables and Vegetable Products,40,12,0.2,0.4,2.0,353
+1000025,Onion,SR Legacy,Vegetables and Vegetable Products,150,35,1.0,0.2,7.4,743
+1000026,Muffin,SR Legacy,Baked Products,150,316,10.2,9.1,48.2,604
+1000027,"Salmon, baked",SR Legacy,Finfish and Shellfish Products,200,266,49.8,7.4,0.0,2186
+1000028,"Chicken thigh, roasted",Branded,Poultry Products,100,200,18.9,13.8,0.0,1081
+1000029,"Turkey, ground 93% lean",SR Legacy,Poultry Products,50,64,9.9,2.7,0.0,491
+1000030,"Chicken breast, roasted",SR Legacy,Poultry Products,50,81,16.4,1.7,0.0,613
+1000031,Carrot,SR Legacy,Vegetables and Vegetable Products,150,155,3.9,2.2,30.0,2084
+1000032,Pasta,Branded,Cereal Grains and Pasta,100,230,9.1,7.3,32.0,115
+1000033,"Chicken thigh, roasted",SR Legacy,Poultry Products,200,445,45.7,29.1,0.0,2314
+1000034,"Salmon, baked",Foundation,Finfish and Shellfish Products,40,100,13.8,5.0,0.0,395
+1000035,"Beef, ground 85% lean",SR Legacy,Beef Products,30,79,8.0,5.2,0.0,192
+1000036,Broccoli,SR Legacy,Vegetables and Vegetable Products,30,20,0.7,0.1,4.1,53
+1000037,Tortilla,SR Legacy,Baked Products,120,178,4.3,6.7,25.2,331
+1000038,Whole Milk,SR Legacy,Dairy and Egg Products,150,239,12.6,14.6,14.2,367
+1000039,"Tuna, canned in water",SR Legacy,Finfish and Shellfish Products,200,448,57.1,24.3,0.2,1179
+1000040,Tortilla,SR Legacy,Baked Products,50,64,2.7,0.7,11.7,73
+1000041,Pasta,SR Legacy,Cereal Grains and Pasta,200,452,10.2,15.8,67.2,745
+1000042,Blueberries,SR Legacy,Fruits and Fruit Juices,200,130,5.7,0.5,25.7,2634
+1000043,Carrot,SR Legacy,Vegetables and Vegetable Products,150,97,1.8,1.4,19.3,1614
+1000044,Eggs,SR Legacy,Dairy and Egg Products,100,117,15.1,3.9,5.3,232
+1000045,Apple,SR Legacy,Fruits and Fruit Juices,50,39,1.0,0.2,8.2,555
+1000046,"Turkey, ground 93% lean",Branded,Poultry Products,30,80,10.2,4.3,0.0,190
+1000047,"Beef roast, cooked",Branded,Beef Products,120,179,24.2,9.1,0.0,1570
+1000048,"Beef, ground 85% lean",Survey (FNDDS),Beef Products,150,335,29.6,24.1,0.0,1943
+1000049,"Butter, salted",SR Legacy,Fats and Oils,40,355,0.0,39.4,0.0,47
+1000050,Pasta,Foundation,Cereal Grains and Pasta,30,58,2.8,1.9,7.3,64
+1000051,Muffin,SR Legacy,Baked Products,40,95,1.5,2.8,15.9,157
+1000052,Croissant,SR Legacy,Baked Products,50,84,4.3,1.3,13.8,29
+1000053,"Chicken thigh, roasted",Survey (FNDDS),Poultry Products,50,100,17.2,3.5,0.0,538
+1000054,"Chickpeas, cooked",SR Legacy,Legumes and Legume Products,30,37,3.5,0.3,5.0,289
+1000055,Apple,SR Legacy,Fruits and Fruit Juices,120,69,2.8,0.6,13.1,1091
+1000056,Tomato,SR Legacy,Vegetables and Vegetable Products,120,44,0.7,0.9,8.4,935
+1000057,Muffin,Branded,Baked Products,100,147,7.6,3.3,21.7,175
+1000058,Eggs,SR Legacy,Dairy and Egg Products,50,103,4.6,7.4,4.5,103
+1000059,"Turkey, ground 93% lean",SR Legacy,Poultry Products,100,251,33.3,13.1,0.0,770
+1000060,Orange,Survey (FNDDS),Fruits and Fruit Juices,50,24,1.2,0.5,3.7,241
+1000061,"Shrimp, boiled",Foundation,Finfish and Shellfish Products,40,120,12.6,7.7,0.0,464
+1000062,Spinach,SR Legacy,Vegetables and Vegetable Products,120,83,2.5,0.3,17.5,1713
+1000063,Whole Milk,Branded,Dairy and Egg Products,200,217,12.5,14.3,9.6,364
+1000064,"Tuna, canned in water",SR Legacy,Finfish and Shellfish Products,150,302,45.3,13.4,0.0,1289
+1000065,Apple,Branded,Fruits and Fruit Juices,200,120,1.9,2.9,21.6,1553
+1000066,"Black beans, cooked",SR Legacy,Legumes and Legume Products,200,228,13.6,4.3,33.6,1156
+1000067,Canola oil,Foundation,Fats and Oils,200,1761,0.0,195.7,0.0,612
+1000068,"Chickpeas, cooked",Survey (FNDDS),Legumes and Legume Products,200,317,17.4,2.1,57.2,1750
+1000069,Whole Milk,SR Legacy,Dairy and Egg Products,200,392,27.3,23.7,17.5,461
+1000070,"Salmon, baked",SR Legacy,Finfish and Shellfish Products,150,240,33.9,11.6,0.0,1479
+1000071,Quinoa,SR Legacy,Cereal Grains and Pasta,100,193,7.9,1.4,37.3,213
+1000072,"Tuna, canned in water",Foundation,Finfish and Shellfish Products,30,80,7.5,5.5,0.0,307
+1000073,Pineapple,Survey (FNDDS),Fruits and Fruit Juices,100,62,2.9,0.5,11.6,584
+1000074,"Lentils, cooked",Survey (FNDDS),Legumes and Legume Products,150,214,14.4,1.9,34.8,446
+1000075,"Salmon, baked",Survey (FNDDS),Finfish and Shellfish Products,100,202,29.5,9.3,0.0,648
+1000076,Barley,Foundation,Cereal Grains and Pasta,120,180,6.9,5.9,24.8,73
+1000077,"Chicken breast, roasted",SR Legacy,Poultry Products,200,309,37.7,17.6,0.0,1380
+1000078,"Beef steak, grilled",Branded,Beef Products,50,94,16.1,3.3,0.0,286
+1000079,"Black beans, cooked",Branded,Legumes and Legume Products,50,67,3.2,1.9,9.2,68
+1000080,Bagel,SR Legacy,Baked Products,200,231,8.1,3.8,41.0,635
+1000081,Croissant,Foundation,Baked Products,150,263,8.4,7.9,39.6,653
+1000082,Broccoli,Survey (FNDDS),Vegetables and Vegetable Products,50,15,0.3,0.3,2.9,508
+1000083,"Turkey, ground 93% lean",SR Legacy,Poultry Products,40,95,11.9,5.3,0.0,236
+1000084,Olive oil,SR Legacy,Fats and Oils,200,1795,0.0,199.4,0.0,782
+1000085,"Chickpeas, cooked",Survey (FNDDS),Legumes and Legume Products,150,200,13.6,2.5,30.8,1296
+1000086,Tomato,Foundation,Vegetables and Vegetable Products,50,38,1.3,0.5,7.1,326
+1000087,"Lentils, cooked",Foundation,Legumes and Legume Products,50,86,5.8,1.6,12.1,259
+1000088,Canola oil,Branded,Fats and Oils,50,436,0.0,48.5,0.0,207
+1000089,Cheddar Cheese,Survey (FNDDS),Dairy and Egg Products,40,86,4.7,5.7,3.9,55
+1000090,"Beef, ground 85% lean",Foundation,Beef Products,100,199,31.6,8.1,0.0,1292
+1000091,Eggs,SR Legacy,Dairy and Egg Products,30,38,2.4,2.1,2.3,48
+1000092,Bun,SR Legacy,Baked Products,100,229,6.4,6.6,36.1,87
+1000093,"Turkey, ground 93% lean",Survey (FNDDS),Poultry Products,40,83,11.2,4.2,0.0,391
+1000094,"Chickpeas, cooked",SR Legacy,Legumes and Legume Products,50,73,3.8,0.7,12.8,104
+1000095,"Beef, ground 85% lean",Survey (FNDDS),Beef Products,150,258,46.4,8.0,0.0,1042
+1000096,Cottage Cheese,SR Legacy,Dairy and Egg Products,120,195,13.5,9.4,14.1,74
+1000097,Whole Milk,Branded,Dairy and Egg Products,50,76,3.1,6.0,2.3,58
+1000098,"Chickpeas, cooked",Branded,Legumes and Legume Products,150,276,14.7,4.7,43.7,288
+1000099,Canola oil,Branded,Fats and Oils,100,806,0.0,89.6,0.0,170
+1000100,Cheddar Cheese,Branded,Dairy and Egg Products,30,36,3.0,1.3,3.1,69
+1000101,Quinoa,Survey (FNDDS),Cereal Grains and Pasta,200,457,10.3,15.9,68.1,194
+1000102,"Butter, salted",Survey (FNDDS),Fats and Oils,200,1662,0.0,184.7,0.0,775
+1000103,"Tuna, canned in water",SR Legacy,Finfish and Shellfish Products,50,103,17.4,3.7,0.0,529
+1000104,Broccoli,Branded,Vegetables and Vegetable Products,150,62,3.2,0.5,11.1,391
+1000105,Rice,Foundation,Cereal Grains and Pasta,100,181,7.2,3.0,31.3,142
+1000106,Cottage Cheese,Foundation,Dairy and Egg Products,200,496,25.7,37.4,14.2,564
+1000107,"Butter, salted",SR Legacy,Fats and Oils,200,1776,0.0,197.3,0.0,425
+1000108,Bun,SR Legacy,Baked Products,40,88,3.5,0.6,17.1,46
+1000109,"Butter, salted",Branded,Fats and Oils,200,1645,0.0,182.8,0.0,288
+1000110,"Shrimp, boiled",Branded,Finfish and Shellfish Products,50,118,17.0,5.5,0.0,472
+1000111,Olive oil,Branded,Fats and Oils,100,852,0.0,94.7,0.0,301
+1000112,Broccoli,Foundation,Vegetables and Vegetable Products,150,135,2.9,2.1,26.1,2249
+1000113,Eggs,SR Legacy,Dairy and Egg Products,30,53,2.3,3.5,3.0,51
+1000114,Barley,SR Legacy,Cereal Grains and Pasta,100,184,6.4,1.6,35.9,189
+1000115,"Beef roast, cooked",Survey (FNDDS),Beef Products,30,67,7.1,4.3,0.0,227
+1000116,"Black beans, cooked",SR Legacy,Legumes and Legume Products,100,103,7.5,0.9,16.3,795
+1000117,Blueberries,Survey (FNDDS),Fruits and Fruit Juices,200,120,3.1,0.7,25.4,1085
+1000118,"Salmon, baked",Survey (FNDDS),Finfish and Shellfish Products,40,58,8.1,2.9,0.0,517
+1000119,Carrot,SR Legacy,Vegetables and Vegetable Products,150,93,1.6,0.5,20.6,1239
+1000120,"Chicken breast, roasted",Survey (FNDDS),Poultry Products,40,58,10.3,1.6,0.7,499
+1000121,Eggs,SR Legacy,Dairy and Egg Products,150,384,21.5,29.5,8.2,161
+1000122,Pasta,SR Legacy,Cereal Grains and Pasta,40,105,2.6,2.9,17.2,158
+1000123,"Chicken thigh, roasted",SR Legacy,Poultry Products,200,383,63.9,14.2,0.0,1537
+1000124,"Butter, salted",Survey (FNDDS),Fats and Oils,100,876,0.0,97.3,0.0,223
+1000125,"Beef steak, grilled",Foundation,Beef Products,120,320,29.3,22.5,0.0,1539
+1000126,Tortilla,Foundation,Baked Products,100,148,8.4,1.3,25.8,347
+1000127,"Chicken thigh, roasted",SR Legacy,Poultry Products,150,238,43.6,7.1,0.0,2052
+1000128,"Lentils, cooked",Survey (FNDDS),Legumes and Legume Products,50,87,5.6,1.0,14.0,286
+1000129,Blueberries,SR Legacy,Fruits and Fruit Juices,40,21,0.9,0.1,4.2,281
+1000130,"Beef roast, cooked",SR Legacy,Beef Products,150,223,29.0,11.9,0.0,1660
+1000131,"Chicken thigh, roasted",Branded,Poultry Products,150,425,46.4,26.6,0.0,798
+1000132,Bun,Branded,Baked Products,150,402,15.0,9.3,64.5,335
+1000133,Tomato,SR Legacy,Vegetables and Vegetable Products,40,29,1.1,0.1,6.0,477
+1000134,"Beef steak, grilled",SR Legacy,Beef Products,100,218,27.0,12.2,0.0,1213
+1000135,Rice,SR Legacy,Cereal Grains and Pasta,120,264,8.8,3.2,50.1,498
+1000136,Croissant,SR Legacy,Baked Products,150,201,7.2,1.6,39.5,557
+1000137,"Black beans, cooked",Survey (FNDDS),Legumes and Legume Products,30,43,2.4,0.8,6.5,202
+1000138,Cheddar Cheese,Survey (FNDDS),Dairy and Egg Products,200,489,32.0,35.0,11.4,128
+1000139,Canola oil,Branded,Fats and Oils,120,928,0.0,103.1,0.0,419
+1000140,"Chicken thigh, roasted",SR Legacy,Poultry Products,30,77,8.9,4.6,0.0,163
+1000141,"Tuna, canned in water",SR Legacy,Finfish and Shellfish Products,200,377,56.6,16.7,0.0,2145
+1000142,Cottage Cheese,Foundation,Dairy and Egg Products,200,487,25.2,34.5,19.0,462
+1000143,Orange,SR Legacy,Fruits and Fruit Juices,200,125,3.9,2.3,22.1,270
+1000144,"Beef roast, cooked",SR Legacy,Beef Products,100,186,20.2,11.7,0.0,1374
+1000145,"Chickpeas, cooked",SR Legacy,Legumes and Legume Products,200,300,23.0,7.6,34.9,1941
+1000146,"Beef, ground 85% lean",Survey (FNDDS),Beef Products,100,297,34.4,17.5,0.4,1151
+1000147,"Chickpeas, cooked",Foundation,Legumes and Legume Products,30,46,1.8,0.7,8.1,152
+1000148,Eggs,Branded,Dairy and Egg Products,100,146,15.4,4.8,10.4,104
+1000149,"Butter, salted",Branded,Fats and Oils,50,443,0.0,49.2,0.0,55
+1000150,"Shrimp, boiled",Survey (FNDDS),Finfish and Shellfish Products,50,53,10.0,1.4,0.0,266

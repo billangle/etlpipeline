@@ -1,0 +1,11 @@
+fdc_id,description,data_type,food_category,serving_size_g,calories_kcal,protein_g,carbohydrate_g,fat_g,sodium_mg
+110264,"Potatoes, raw",SR Legacy,Vegetables and Vegetable Products,100,77,2.02,17.49,0.09,6
+109151,"Apples, raw, with skin",SR Legacy,Fruits and Fruit Juices,100,52,0.26,13.81,0.17,1
+110406,"Spinach, raw",SR Legacy,Vegetables and Vegetable Products,100,23,2.86,3.63,0.39,79
+110090,"Tomatoes, raw, red, ripe",SR Legacy,Vegetables and Vegetable Products,100,18,0.88,3.89,0.2,5
+110043,"Oranges, raw, all commercial varieties",SR Legacy,Fruits and Fruit Juices,100,47,0.94,11.75,0.12,0
+110266,"Sweet potatoes, raw",SR Legacy,Vegetables and Vegetable Products,100,86,1.57,20.12,0.05,55
+110080,"Carrots, raw",SR Legacy,Vegetables and Vegetable Products,100,41,0.93,9.58,0.24,69
+110228,"Broccoli, raw",SR Legacy,Vegetables and Vegetable Products,100,34,2.82,6.64,0.37,33
+110351,"Beef, loin, top sirloin, lean only, grilled",SR Legacy,Beef Products,100,206,26.9,0,10.44,55
+110581,"Milk, lowfat, 1% milkfat, fluid",SR Legacy,Dairy and Egg Products,100,42,3.4,5,1,44
