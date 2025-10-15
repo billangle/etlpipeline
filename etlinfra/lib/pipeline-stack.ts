@@ -75,6 +75,20 @@ export class EtlInfraStack extends cdk.Stack {
       stringValue: glueRoleARN
    });
 
+
+   const inputBucketARN = rawBucket.bucketArn;
+    const ssmInputBucketARN = new StringParameter (this, 'etlInputBucketSSM', {
+      parameterName: 'etlInputBucketSSMArn',
+      stringValue: inputBucketARN
+   });
+   
+   const outputBucketARN = processedBucket.bucketArn;
+    const ssmOutputBucketARN = new StringParameter (this, 'etlOutputBucketSSM', {
+      parameterName: 'etlOuputBucketSSMArn',
+      stringValue: outputBucketARN
+   });
+
+ 
     // Outputs
 
 
