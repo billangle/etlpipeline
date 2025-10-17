@@ -1,4 +1,3 @@
-
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -13,32 +12,35 @@ import * as glue_l1 from 'aws-cdk-lib/aws-glue'; // L1s for database/crawler/wor
 import * as glue from '@aws-cdk/aws-glue-alpha';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 
+interface ConfigurationData {
+  inputBucketName: string;
+  outputBucketName: string;
+  databaseName: string;
+  region: string;
+};
+
+interface EtlStackProps extends cdk.StackProps {
+  configData: ConfigurationData;
+  deployEnv: string;
+}
+
 export class EtlDataPipe1Stack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: EtlStackProps) {
     super(scope, id, props);
 
-    // Buckets for raw input and processed output data
-    const rawBucket = new s3.Bucket(this, 'RawDataBucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-    });
+    // === Get S3 bucket names and role ARNs from SSM ===
+    const rawBucketName = StringParameter.valueForStringParameter(this, '/etlinfra/raw-bucket-name');
+    const processedBucketName = StringParameter.valueForStringParameter(this, '/etlinfra/processed-bucket-name');
+    const glueJobRoleArn = StringParameter.valueForStringParameter(this, '/etlinfra/glue-job-role-arn');
+    const crawlerRoleArn = StringParameter.valueForStringParameter(this, '/etlinfra/crawler-role-arn');
 
-    const processedBucket = new s3.Bucket(this, 'ProcessedDataBucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-    });
+    // Reference existing S3 buckets
+    const rawBucket = s3.Bucket.fromBucketName(this, 'RawDataBucket', rawBucketName);
+    const processedBucket = s3.Bucket.fromBucketName(this, 'ProcessedDataBucket', processedBucketName);
 
-    // Role for the Glue job (L2 requires a role)
-    const glueJobRole = new iam.Role(this, 'GlueJobRole', {
-      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSGlueServiceRole'),
-      ],
-    });
-
-    // Allow Glue job to read the script and buckets
-    rawBucket.grantRead(glueJobRole);
-    processedBucket.grantReadWrite(glueJobRole);
+    // Reference existing IAM roles
+    const glueJobRole = iam.Role.fromRoleArn(this, 'GlueJobRole', glueJobRoleArn, { mutable: false });
+    const crawlerRole = iam.Role.fromRoleArn(this, 'CrawlerRole', crawlerRoleArn, { mutable: false });
 
     // The Glue ETL script packaged from local repo (L2 uses glue.Code)
     const scriptCode = glue.Code.fromAsset('glue/etl_job.py');
@@ -65,12 +67,6 @@ export class EtlDataPipe1Stack extends cdk.Stack {
     });
 
     // ===== Glue Crawler (targets processed/output) – L1 =====
-    const crawlerRole = new iam.Role(this, 'CrawlerRole', {
-      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSGlueServiceRole'),
-      ],
-    });
     processedBucket.grantRead(crawlerRole);
 
     const crawlerName = `${cdk.Stack.of(this).stackName}-crawler`;
@@ -155,6 +151,7 @@ export class EtlDataPipe1Stack extends cdk.Stack {
       crawlerName: crawler.name!,
     });
 
+  
     const success = new sfn.Succeed(this, 'Success');
     const fail = new sfn.Fail(this, 'Fail');
 
@@ -184,5 +181,30 @@ export class EtlDataPipe1Stack extends cdk.Stack {
     new cdk.CfnOutput(this, 'JobTriggerName', { value: jobTrigger.name! });
     new cdk.CfnOutput(this, 'CrawlerTriggerName', { value: crawlerTrigger.name! });
     new cdk.CfnOutput(this, 'StateMachineArn', { value: stateMachine.stateMachineArn });
+
+    new StringParameter(this, 'GlueJobNameParam', {
+      parameterName: `/etlpipe1/glue-job-name`,
+      stringValue: job.jobName,
+    });
+    new StringParameter(this, 'CrawlerNameParam', {
+      parameterName: `/etlpipe1/crawler-name`,
+      stringValue: crawler.name!,
+    });
+    new StringParameter(this, 'WorkflowNameParam', {
+      parameterName: `/etlpipe1/workflow-name`,
+      stringValue: workflow.name!,
+    });
+    new StringParameter(this, 'JobTriggerNameParam', {
+      parameterName: `/etlpipe1/job-trigger-name`,
+      stringValue: jobTrigger.name!,
+    });
+    new StringParameter(this, 'CrawlerTriggerNameParam', {
+      parameterName: `/etlpipe1/crawler-trigger-name`,
+      stringValue: crawlerTrigger.name!,
+    });
+    new StringParameter(this, 'StateMachineArnParam', {
+      parameterName: `/etlpipe1/state-machine-arn`,
+      stringValue: stateMachine.stateMachineArn,
+    });
   }
 }

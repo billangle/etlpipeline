@@ -1,13 +1,20 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { DataPipelineStack } from '../lib/pipeline-stack';
+import * as fs from 'fs';
+import { EtlDataPipe1Stack } from '../lib/etl-data-pipe1stack.';
 
 const app = new cdk.App();
 
-new DataPipelineStack(app, 'GlueStepFunctionsCdkStarterL2', {
+let environment = process.env.DEPLOY_ENV || '';
+const envdata = fs.readFileSync("../" + environment + '/cdk-spec.json', 'utf8');
+const configData = JSON.parse(envdata);
+
+new EtlDataPipe1Stack(app, 'EtlDataPipe1Stack', {
   env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION,
+    account: process.env.CDK_ACCOUNT,
+    region: configData.region,
   },
+  configData: configData,
+  deployEnv: environment,
 });
