@@ -12,6 +12,7 @@ import * as glue_l1 from 'aws-cdk-lib/aws-glue'; // L1s for database/crawler/wor
 import * as glue from '@aws-cdk/aws-glue-alpha';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 
+
 interface ConfigurationData {
   inputBucketName: string;
   outputBucketName: string;
@@ -25,22 +26,27 @@ interface EtlStackProps extends cdk.StackProps {
 }
 
 export class EtlDataPipe1Stack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: EtlStackProps) {
+  constructor(scope: Construct, id: string, props: EtlStackProps) {
     super(scope, id, props);
 
     // === Get S3 bucket names and role ARNs from SSM ===
-    const rawBucketName = StringParameter.valueForStringParameter(this, '/etlinfra/raw-bucket-name');
-    const processedBucketName = StringParameter.valueForStringParameter(this, '/etlinfra/processed-bucket-name');
-    const glueJobRoleArn = StringParameter.valueForStringParameter(this, '/etlinfra/glue-job-role-arn');
-    const crawlerRoleArn = StringParameter.valueForStringParameter(this, '/etlinfra/crawler-role-arn');
+    const rawBucketName = StringParameter.valueForStringParameter(this, 'etlInputBucketSSMName');
+    const processedBucketName = StringParameter.valueForStringParameter(this, 'etlOuputBucketSSMName');
+    const glueJobRoleArn = StringParameter.valueForStringParameter(this, 'etlGlueJobRoleSSMArn');
+    const databaseArn = StringParameter.valueForStringParameter(this, 'etlDatabaseARNSSM');
+    const etlRoleArn = StringParameter.valueForStringParameter(this, 'etlLambdaExecuteRoleARN');
+
+
 
     // Reference existing S3 buckets
-    const rawBucket = s3.Bucket.fromBucketName(this, 'RawDataBucket', rawBucketName);
-    const processedBucket = s3.Bucket.fromBucketName(this, 'ProcessedDataBucket', processedBucketName);
+
+     const rawBucket = s3.Bucket.fromBucketName(this, 'RawDataBucket', rawBucketName);
+      const processedBucket = s3.Bucket.fromBucketName(this, 'ProcessedDataBucket', processedBucketName);
 
     // Reference existing IAM roles
     const glueJobRole = iam.Role.fromRoleArn(this, 'GlueJobRole', glueJobRoleArn, { mutable: false });
-    const crawlerRole = iam.Role.fromRoleArn(this, 'CrawlerRole', crawlerRoleArn, { mutable: false });
+    const crawlerRole = iam.Role.fromRoleArn(this, 'CrawlerRole', glueJobRoleArn, { mutable: false });
+    const etlLambdaRole = iam.Role.fromRoleArn(this, 'EtlLambdaRole', etlRoleArn, { mutable: false });
 
     // The Glue ETL script packaged from local repo (L2 uses glue.Code)
     const scriptCode = glue.Code.fromAsset('glue/etl_job.py');
@@ -60,11 +66,26 @@ export class EtlDataPipe1Stack extends cdk.Stack {
     });
 
     // ===== Glue Data Catalog (Database) – L1 =====
-    const databaseName = `${cdk.Stack.of(this).stackName.toLowerCase()}_db`;
-    const glueDb = new glue_l1.CfnDatabase(this, 'CatalogDatabase', {
-      catalogId: cdk.Stack.of(this).account,
-      databaseInput: { name: databaseName },
-    });
+    
+
+    // Wrapper Construct that represents an existing Glue database by ARN/name.
+    // This does NOT create a new CloudFormation resource; it only exposes the ARN and name
+    // so other constructs (like the crawler) can depend on it logically in code.
+    class ExistingGlueDatabase extends Construct {
+      public readonly databaseArn: string;
+      public readonly databaseName: string;
+      constructor(scope: Construct, id: string, props: { databaseArn: string; databaseName: string }) {
+        super(scope, id);
+        this.databaseArn = props.databaseArn;
+        this.databaseName = props.databaseName;
+      }
+    }
+
+    const databaseName = props.configData.databaseName;
+    const glueDb = new ExistingGlueDatabase(this, 'ExistingGlueDatabase', { databaseArn, databaseName });
+
+
+
 
     // ===== Glue Crawler (targets processed/output) – L1 =====
     processedBucket.grantRead(crawlerRole);
@@ -84,7 +105,6 @@ export class EtlDataPipe1Stack extends cdk.Stack {
         deleteBehavior: 'DEPRECATE_IN_DATABASE',
       },
     });
-    crawler.addDependency(glueDb);
 
     // ===== Optional: Glue Workflow + Triggers (L1) =====
     const workflow = new glue_l1.CfnWorkflow(this, 'PipelineWorkflow', {
@@ -127,6 +147,7 @@ export class EtlDataPipe1Stack extends cdk.Stack {
       handler: 'index.handler',
       code: lambda.Code.fromAsset('lambda/validate'),
       environment: { RAW_BUCKET: rawBucket.bucketName },
+      role: etlLambdaRole,
     });
     rawBucket.grantRead(validatorFn);
 
@@ -145,6 +166,8 @@ export class EtlDataPipe1Stack extends cdk.Stack {
       integrationPattern: sfn.IntegrationPattern.RUN_JOB,
       resultPath: '$.glueResult',
     });
+
+   
 
     // Start crawler (does not wait for completion)
     const startCrawler = new tasks.GlueStartCrawlerRun(this, 'Start Processed Crawler', {

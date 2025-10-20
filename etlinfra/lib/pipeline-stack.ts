@@ -24,17 +24,6 @@ export class EtlInfraStack extends cdk.Stack {
     super(scope, id, props);
 
     // Buckets for raw input and processed output data
-    /*
-    const rawBucket = new s3.Bucket(this, `${props.configData.inputBucketName}-${props.deployEnv}` , {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-    });
-
-    const processedBucket = new s3.Bucket(this, `${props.configData.outputBucketName}-${props.deployEnv}`, {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-    });
-    */
 
     const rawBucketConstruct = new S3(this, `${props.configData.inputBucketName}-${props.deployEnv}` , {
       env: props.deployEnv,
@@ -48,17 +37,47 @@ export class EtlInfraStack extends cdk.Stack {
     });
     const processedBucket = processedBucketConstruct.DataBucket;
 
-    // Role for the Glue job (L2 requires a role)
     const glueJobRole = new iam.Role(this, 'EtlStackGlueJobRole', {
       assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSGlueServiceRole'),
       ],
-    });
+        });
+
+        // Add S3 and SSM permissions
+        glueJobRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        's3:GetObject',
+        's3:ListBucket',
+        'ssm:GetParameter',
+      ],
+      resources: ['*']
+        }));
+
 
     // Allow Glue job to read the script and buckets
     rawBucket.grantRead(glueJobRole);
     processedBucket.grantReadWrite(glueJobRole);
+
+    const etlRole = new iam.Role(this, 'EtlExecutionRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+      ],
+    });
+
+    etlRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        's3:GetObject',
+        's3:ListBucket',
+        'lambda:InvokeFunction',
+        'ssm:GetParameter',
+        'ssm:PutParameter'
+      ],
+      resources: ['*']
+    }));
 
     
     // ===== Glue Data Catalog (Database) – L1 =====
@@ -76,17 +95,30 @@ export class EtlInfraStack extends cdk.Stack {
    });
 
 
-   const inputBucketARN = rawBucket.bucketArn;
+   const inputBucketName = rawBucket.bucketName
     const ssmInputBucketARN = new StringParameter (this, 'etlInputBucketSSM', {
-      parameterName: 'etlInputBucketSSMArn',
-      stringValue: inputBucketARN
+      parameterName: 'etlInputBucketSSMName',
+      stringValue: inputBucketName
    });
    
-   const outputBucketARN = processedBucket.bucketArn;
-    const ssmOutputBucketARN = new StringParameter (this, 'etlOutputBucketSSM', {
-      parameterName: 'etlOuputBucketSSMArn',
-      stringValue: outputBucketARN
+   const outputBucketName = processedBucket.bucketName;
+    const ssmOutputBucketName = new StringParameter (this, 'etlOutputBucketSSM', {
+      parameterName: 'etlOuputBucketSSMName',
+      stringValue: outputBucketName
    });
+
+
+    const databaseARN = `arn:aws:glue:${props.configData.region}:${cdk.Stack.of(this).account}:database/${databaseName}`;
+    const ssmDatabaseARN = new StringParameter (this, 'etlDatabaseARNSSM', {
+      parameterName: 'etlDatabaseARNSSM',
+      stringValue: databaseARN
+   });
+
+  const etlRoleARN = etlRole.roleArn;
+  const ssmEtlRoleARN = new StringParameter(this, 'etlLambdaExecuteRoleARN', {
+    parameterName: 'etlLambdaExecuteRoleARN',
+    stringValue: etlRoleARN
+  });
 
  
     // Outputs
