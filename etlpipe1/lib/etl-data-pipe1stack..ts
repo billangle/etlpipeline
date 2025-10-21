@@ -157,6 +157,8 @@ export class EtlDataPipe1Stack extends cdk.Stack {
       outputPath: '$.Payload',
     });
 
+
+
     const startGlueTask = new tasks.GlueStartJobRun(this, 'Run Glue ETL', {
       glueJobName: job.jobName,
       arguments: sfn.TaskInput.fromObject({
@@ -172,18 +174,34 @@ export class EtlDataPipe1Stack extends cdk.Stack {
     // Start crawler (does not wait for completion)
     const startCrawler = new tasks.GlueStartCrawlerRun(this, 'Start Processed Crawler', {
       crawlerName: crawler.name!,
+      resultPath: '$.glueResult',
     });
 
-  
+ 
     const success = new sfn.Succeed(this, 'Success');
     const fail = new sfn.Fail(this, 'Fail');
 
-    const definition = validateTask
-      .next(startGlueTask)
-      .next(startCrawler)
-      .next(new sfn.Choice(this, 'Was Glue successful?')
-        .when(sfn.Condition.isPresent('$.glueResult.JobRunId'), success)
-        .otherwise(fail));
+      
+
+      const logGlueResults = new sfn.Pass(this, 'Log Glue Results', {
+        parameters: {
+          'jobDetails.$': '$.glueResult',
+          'timestamp.$': '$$.State.EnteredTime'
+        },
+        resultPath: '$.logged'
+      });
+
+
+      const definition = validateTask
+        .next(startGlueTask)
+        .next(logGlueResults)
+        .next(startCrawler)
+        .next(new sfn.Choice(this, 'Was Glue successful?')
+          .when(sfn.Condition.stringEquals('$.logged.jobDetails.JobRunState', 'SUCCEEDED'), success)
+          .otherwise(fail));
+     
+
+
 
     const stateMachine = new sfn.StateMachine(this, 'PipelineStateMachine', {
       definitionBody: sfn.DefinitionBody.fromChainable(definition),
