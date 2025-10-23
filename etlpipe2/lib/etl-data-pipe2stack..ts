@@ -7,6 +7,7 @@ import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as glue_l1 from 'aws-cdk-lib/aws-glue'; // L1s for database/crawler/workflow/trigger
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 // Glue L2 (alpha) constructs
 //import * as glue from 'aws-cdk-lib/aws-glue';
 import * as glue from '@aws-cdk/aws-glue-alpha';
@@ -192,6 +193,33 @@ export class EtlDataPipe2Stack extends cdk.Stack {
         resultPath: '$.logged'
       });
 
+      // ===== DynamoDB table to persist Glue job runs =====
+      const glueJobsTable = new dynamodb.Table(this, 'EtlGlueJobs', {
+        partitionKey: { name: 'jobId', type: dynamodb.AttributeType.STRING },
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      });
+
+      // Lambda writer to persist Glue job results as native DynamoDB Map attributes
+      const putGlueResultFn = new lambda.Function(this, 'PutGlueResultFn', {
+        runtime: lambda.Runtime.NODEJS_20_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset('lambda/put-glue-result'),
+        timeout: Duration.seconds(30),
+        memorySize: 128,
+        environment: {
+          TABLE_NAME: glueJobsTable.tableName,
+        },
+      });
+
+      glueJobsTable.grantWriteData(putGlueResultFn);
+
+      const putGlueResult = new tasks.LambdaInvoke(this, 'Put Glue Result Lambda', {
+        lambdaFunction: putGlueResultFn,
+        payload: sfn.TaskInput.fromObject({ jobDetails: sfn.JsonPath.stringAt('$.logged.jobDetails'), timestamp: sfn.JsonPath.stringAt('$.logged.timestamp') }),
+        resultPath: '$.dynamoResult',
+      });
+
       // Build FAILURE log payload (captures error/cause)
     const buildFailureLog = new sfn.Pass(this, 'Build Failure Log', {
       parameters: {
@@ -255,6 +283,7 @@ export class EtlDataPipe2Stack extends cdk.Stack {
       .start(validateTask)
       .next(startGlueTask)
       .next(logGlueResults)
+      .next(putGlueResult)
       .next(startCrawler)
       .next(new sfn.Choice(this, 'Was Glue successful?')
         .when(sfn.Condition.stringEquals('$.logged.jobDetails.JobRunState', 'SUCCEEDED'), success)
