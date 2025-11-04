@@ -1,0 +1,6 @@
+{
+    "inputBucketName": "usdadev-etl-test-input",
+    "outputBucketName": "usdadev-etl-test-output",
+    "databaseName": "usdadev-etl-test-db",
+    "region": "us-east-1"
+}
