@@ -48,6 +48,9 @@ export class EtlDataPipe1Stack extends cdk.Stack {
     const crawlerRole = iam.Role.fromRoleArn(this, 'CrawlerRole', glueJobRoleArn, { mutable: false });
     const etlLambdaRole = iam.Role.fromRoleArn(this, 'EtlLambdaRole', etlRoleArn, { mutable: false });
 
+
+    
+
     // The Glue ETL script packaged from local repo (L2 uses glue.Code)
     const scriptCode = glue.Code.fromAsset('glue/etl_job.py');
 

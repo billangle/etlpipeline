@@ -89,7 +89,7 @@ export class FpacFsaInfraStack extends cdk.Stack {
 
 
     // Allow Glue job to read the script and buckets
-    landingBucket.grantRead(glueJobRole);
+    landingBucket.grantReadWrite(glueJobRole);
     cleanBucket.grantReadWrite(glueJobRole);
     finalBucket.grantReadWrite(glueJobRole);
 

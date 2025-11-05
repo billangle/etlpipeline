@@ -2,15 +2,15 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import * as fs from 'fs';
-import { EtlDataPipe1Stack } from '../lib/etl-data-pipe1stack.';
+import { CarsDataPipelineStack } from '../lib/cars-data-pipeline-stack';
 
 const app = new cdk.App();
 
 let environment = process.env.DEPLOY_ENV || '';
-const envdata = fs.readFileSync("../" + environment + '/cdk-spec.json', 'utf8');
+const envdata = fs.readFileSync("../../" + environment + '/cdk-spec.json', 'utf8');
 const configData = JSON.parse(envdata);
 
-new EtlDataPipe1Stack(app, 'EtlDataPipe1Stack', {
+new CarsDataPipelineStack(app, 'CarsDataPipelineStack', {
   env: {
     account: process.env.CDK_ACCOUNT,
     region: configData.region,
