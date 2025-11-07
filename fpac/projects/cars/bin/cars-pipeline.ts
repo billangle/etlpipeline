@@ -17,4 +17,5 @@ new CarsDataPipelineStack(app, 'CarsDataPipelineStack', {
   },
   configData: configData,
   deployEnv: environment,
+  project: 'cars',
 });

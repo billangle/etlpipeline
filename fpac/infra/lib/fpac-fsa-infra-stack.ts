@@ -7,6 +7,7 @@ import * as glue_l1 from 'aws-cdk-lib/aws-glue'; // L1s for database/crawler/wor
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { S3 } from './constructs/DataEtlS3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import { FpacDynamoDb } from './constructs/FpacDynamoDb';
 
 interface ConfigurationData {
   landingBucketName: string;
@@ -45,26 +46,13 @@ export class FpacFsaInfraStack extends cdk.Stack {
     });
     const finalBucket = finalBucketConstruct.DataBucket;
 
-    // Create folder-like prefixes in S3 buckets to organize data
-    //
-    new s3deploy.BucketDeployment(this, 'CreateDBO', {
-      destinationBucket: landingBucket,
-      destinationKeyPrefix: 'dbo/',  // <-- creates a folder-like prefix
-      sources: [s3deploy.Source.data('dbo-ignore.txt', 'NA')],
-    });
+  
 
+  // DynamoDB Table for tracking ETL job metadata and status
 
-    new s3deploy.BucketDeployment(this, 'CreateETLJobs', {
-      destinationBucket: landingBucket,
-      destinationKeyPrefix: 'etl-jobs/',  // <-- creates a folder-like prefix
-      sources: [s3deploy.Source.data('etl-jobs-ignore.txt', 'NA')],
-    });
-
-
-    new s3deploy.BucketDeployment(this, 'CreateCleanETLJobs', {
-      destinationBucket: cleanBucket,
-      destinationKeyPrefix: 'etl-jobs/',  // <-- creates a folder-like prefix
-      sources: [s3deploy.Source.data('clean-etl-jobs-ignore.txt', 'NA')],
+    const etlJobsTable = new FpacDynamoDb(this, 'FpacFsaEtlJobsTable', {
+      tablename: 'FpacFsaEtlJobs',
+      key: 'jobId',
     });
 
 // IAM Role for Glue Jobs

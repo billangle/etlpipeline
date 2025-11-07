@@ -12,6 +12,7 @@ import * as glue_l1 from 'aws-cdk-lib/aws-glue'; // L1s for database/crawler/wor
 import * as glue from '@aws-cdk/aws-glue-alpha';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { FpacGlueJob } from './constructs/FpacGlueJob';
+import { ProjectS3Folders } from './constructs/ProjectS3Folders';
 
 
 interface ConfigurationData {
@@ -25,6 +26,7 @@ interface ConfigurationData {
 interface EtlStackProps extends cdk.StackProps {
   configData: ConfigurationData;
   deployEnv: string;
+  project: string;
 }
 
 export class CarsDataPipelineStack extends cdk.Stack {
@@ -40,18 +42,25 @@ export class CarsDataPipelineStack extends cdk.Stack {
     const databaseArn = StringParameter.valueForStringParameter(this, 'fpacFsaDatabaseARNSSM');
     const etlRoleArn = StringParameter.valueForStringParameter(this, 'fpacFsaLambdaExecuteRoleARN');
 
-
-
     // Reference existing S3 buckets
 
      const landingBucket = s3.Bucket.fromBucketName(this, 'LandingDataBucket', landingBucketName);
-      const cleanBucket = s3.Bucket.fromBucketName(this, 'CleanDataBucket', cleanBucketName);
-      const finalBucket = s3.Bucket.fromBucketName(this, 'FinalDataBucket', finalBucketName);
+     const cleanBucket = s3.Bucket.fromBucketName(this, 'CleanDataBucket', cleanBucketName);
+     const finalBucket = s3.Bucket.fromBucketName(this, 'FinalDataBucket', finalBucketName);
 
     // Reference existing IAM roles
     const glueJobRole = iam.Role.fromRoleArn(this, 'GlueJobRole', glueJobRoleArn, { mutable: false });
     const crawlerRole = iam.Role.fromRoleArn(this, 'CrawlerRole', glueJobRoleArn, { mutable: false });
     const etlLambdaRole = iam.Role.fromRoleArn(this, 'EtlLambdaRole', etlRoleArn, { mutable: false });
+
+    const projectS3Folders = new ProjectS3Folders(this, 'CarsProjectS3Folders', {
+      project: props.project,
+      landingBucket: landingBucket,
+      cleanBucket: cleanBucket,
+      finalBucket: finalBucket,
+    });
+
+    // ===== Glue ETL Jobs =====
 
     // The Glue ETL script for moving Landing Zone 
    
@@ -65,6 +74,7 @@ export class CarsDataPipelineStack extends cdk.Stack {
       finalBucket: finalBucket.bucketName,
       jobType: 'CARS-LandingFiles',
       stepName: 'Step1',
+      project: props.project,
     });
 
     // Step 2:The Glue ETL script for cleaningJob data from Landing to Cleaned zone
@@ -79,6 +89,7 @@ export class CarsDataPipelineStack extends cdk.Stack {
       finalBucket: finalBucket.bucketName,
       jobType: 'CARS-CleansedFiles',
       stepName: 'Step2',
+      project: props.project,
     });
 
      // Step 3 The Glue ETL script for processing data from Cleaned to Final zone
@@ -93,6 +104,7 @@ export class CarsDataPipelineStack extends cdk.Stack {
       finalBucket: finalBucket.bucketName,
       jobType: 'CARS',
       stepName: 'Step3',
+      project: props.project,
     });
 
 
@@ -157,7 +169,7 @@ export class CarsDataPipelineStack extends cdk.Stack {
       functionName: `FSA-${props.deployEnv}-CARS-Validator`,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('lambda/validate'),
-      environment: { LANDING_BUCKET: landingBucket.bucketName },
+      environment: { LANDING_BUCKET: landingBucket.bucketName, PROJECT: props.project },
       role: etlLambdaRole,
     });
     landingBucket.grantRead(validatorFn);

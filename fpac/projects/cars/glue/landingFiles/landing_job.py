@@ -6,8 +6,9 @@ from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME", "landing_bucket"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "landing_bucket" , "project"])
 landing_bucket = args["landing_bucket"]
+project = args["project"]
 
 sc = SparkContext()
 glueContext = GlueContext(sc)
@@ -15,8 +16,8 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args["JOB_NAME"], args)
 
-input_path = f"s3://{landing_bucket}/dbo/"
-output_path = f"s3://{landing_bucket}/etl-jobs/"
+input_path = f"s3://{landing_bucket}/{project}/dbo/"
+output_path = f"s3://{landing_bucket}/{project}/etl-jobs/"
 
 df = spark.read.option("header", True).csv(input_path)
 if df.rdd.isEmpty():

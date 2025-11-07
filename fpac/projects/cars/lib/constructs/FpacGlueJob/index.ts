@@ -18,6 +18,7 @@
     finalBucket: string;
     jobType: string;
     stepName: string;
+    project: string;
   }
 
   
@@ -46,6 +47,7 @@
                 '--landing_bucket': props.landingBucket,
                 '--clean_bucket': props.cleanBucket,
                 '--final_bucket': props.finalBucket,
+                '--project': props.project,
             },
         });
 
@@ -72,6 +74,7 @@
                 '--landing_bucket': props.landingBucket,
                 '--clean_bucket': props.cleanBucket,
                 '--final_bucket': props.finalBucket,
+                '--project': props.project,
             }),
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             resultPath: '$.glueResult',

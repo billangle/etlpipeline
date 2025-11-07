@@ -12,6 +12,7 @@ export const handler = async (event) => {
     }
 
     const envBucket = process.env.LANDING_BUCKET;
+    const project = process.env.PROJECT;
 
     console.log ("Event: " + envBucket);
     const command = new GetParameterCommand(input);
@@ -26,9 +27,9 @@ export const handler = async (event) => {
 
 
   const bucket = bucketName;
-  const prefix = 'dbo';
+  const prefix = `${project}/dbo`;
   const res = await s3.send(new ListObjectsV2Command({ Bucket: bucket, Prefix: prefix, MaxKeys: 1 }));
   const ok = (res.KeyCount ?? 0) > 0;
-  if (!ok) throw new Error(`No input objects found in s3://${bucket}/${prefix}. Upload a file and retry.`);
+  if (!ok) throw new Error(`No input objects found in s3://${bucket}/${project}/${prefix}. Upload a file and retry.`);
   return { ok, bucket, bucketName, prefix, envBucket};
 };
