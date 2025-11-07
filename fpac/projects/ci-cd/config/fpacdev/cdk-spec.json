@@ -3,6 +3,5 @@
     "cleanBucketName": "fpacfsa-cleansed-zone",
     "finalBucketName": "fpacfsa-final-zone",
     "databaseName": "fsa-dev-cars",
-    "region": "us-east-1",
-    "dynamoTableName": "FSA-dev-cars-metadata"
+    "region": "us-east-2"
 }
