@@ -1,0 +1,6 @@
+{
+    "inputBucketName": "boodev-etl-test-input",
+    "outputBucketName": "boodev-etl-test-output",
+    "databaseName": "boodev-etl-test-db",
+    "region": "us-east-2"
+}

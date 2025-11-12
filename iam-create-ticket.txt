@@ -1,0 +1,41 @@
+AWS Policy JSON:
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:*",
+                "iam:*",
+                "s3:*",
+                "ecr:*",
+                "ssm:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+Justification:
+The goal is to create automated deployment pipelines from Bitbucket, which are idempotent.
+Thus, each environment, dev, cert and prod are built using automated tools, ensuring that the
+solution in each environment is correct. This will reduce costs by dramtically reducing errors
+and the associated rework. The primary AWS tooling to deploy this is the AWS CDK. This tool is designed
+to create highly automated solutions for AWS services. This tooling will be called via BitBucket
+CI/CD pipelines, which will require AWS keys and AWS permissions. The above policy will allow
+the CDK to function as exepected.
+
+Challenges:
+This above policy can create any AWS service, which is likely not in alignment with 
+expectations. What can be done is to add boundary permissions, which will cause items 
+outside of the boundary to fail. The project needs the ability to create and utilize AWS
+roles and services. However, the project does not need to create ALL services. 
+What can be defined is the acceptable use of services and then deny access to the other
+services. As an example, most commonly used services are S3, step functions, glue, Athena, RedShift, Lambda.
+The deployment pipelines should have unfettered access to create and deploy services and roles
+for these AWS capabilities.
+As an example, services such as EC2, VPCs, gateways, probably should have much stricter limits,
+because they do not represent the commonly used services and because they represent higher cost and
+security risks.
+
+
