@@ -11,11 +11,10 @@ import * as glue_l1 from 'aws-cdk-lib/aws-glue'; // L1s for database/crawler/wor
 //import * as glue from 'aws-cdk-lib/aws-glue';
 import * as glue from '@aws-cdk/aws-glue-alpha';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
-import { FpacGlueJob } from './constructs/FpacGlueJob';
+import { FpacGlueJob } from '../../cdk/lib/constructs/FpacGlueJob';
 import { ProjectS3Folders } from './constructs/ProjectS3Folders';
 import { FpacLambda } from './constructs/FpacLambda';
 import { AssetCode } from "aws-cdk-lib/aws-lambda"
-
 
 
 interface ConfigurationData {
@@ -35,7 +34,7 @@ interface EtlStackProps extends cdk.StackProps {
 const rootDirPrefix = "../../../projects";
 
 
-export class FpacProjectDataPipelineStack extends cdk.Stack {
+export class FpacCars2DataPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: EtlStackProps) {
     super(scope, id, props);
 
